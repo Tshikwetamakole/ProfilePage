@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfilePage.Views.ProfilePage"
+             Title="Profile"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+    <ScrollView>
+        <Grid RowSpacing="10" 
+              Padding="20"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <!-- Name Section -->
+            <Label Grid.Row="0"
+                   Text="Name"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                   Margin="0,0,0,5"/>
+            <Entry Grid.Row="1"
+                   x:Name="txtName"
+                   Text="{Binding Name}"
+                   Placeholder="Enter your name"
+                   PlaceholderColor="Gray"/>
+
+            <!-- Surname Section -->
+            <Label Grid.Row="2"
+                   Text="Surname"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                   Margin="0,0,0,5"/>
+            <Entry Grid.Row="3"
+                   x:Name="txtSurname"
+                   Text="{Binding Surname}"
+                   Placeholder="Enter your surname"
+                   PlaceholderColor="Gray"/>
+
+            <!-- Email Section -->
+            <Label Grid.Row="4"
+                   Text="Email Address"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                   Margin="0,0,0,5"/>
+            <Entry Grid.Row="5"
+                   x:Name="txtEmail"
+                   Text="{Binding EmailAddress}"
+                   Keyboard="Email"
+                   Placeholder="Enter your email"
+                   PlaceholderColor="Gray"/>
+
+            <!-- Bio Section -->
+            <Label Grid.Row="6"
+                   Text="Bio"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
+                   Margin="0,0,0,5"/>
+            <Editor Grid.Row="7"
+                    x:Name="txtBio"
+                    Text="{Binding Bio}"
+                    HeightRequest="100"
+                    Placeholder="Tell us about yourself"
+                    PlaceholderColor="Gray"
+                    AutoSize="TextChanges"/>
+
+            <!-- Save Button -->
+            <Button Grid.Row="8"
+                    Text="Save Profile"
+                    Clicked="OnSaveClicked"
+                    Margin="0,20,0,0"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="25"/>
+        </Grid>
+    </ScrollView>
+</ContentPage>
