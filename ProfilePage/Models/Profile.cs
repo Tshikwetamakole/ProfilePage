@@ -6,4 +6,6 @@ public class Profile
     public string Surname { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
     public string Bio { get; set; } = string.Empty;
+    public string ProfileImagePath { get; set; } = string.Empty;
+
 }

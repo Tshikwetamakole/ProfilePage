@@ -1,18 +1,13 @@
-﻿namespace ProfilePage;
-
-public partial class MainPage : ContentPage
+﻿namespace ProfilePage
 {
-    private readonly ProfilePage _profilePage;
-
-    public MainPage(ProfilePage profilePage)
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-        _profilePage = profilePage;
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        await Navigation.PushAsync(_profilePage);
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+        private void OnSaveClicked(object sender, EventArgs e)
+        {
+        }
     }
 }

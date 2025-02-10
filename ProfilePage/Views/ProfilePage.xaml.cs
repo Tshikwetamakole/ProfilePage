@@ -19,6 +19,46 @@ public partial class ProfilePage : ContentPage
     {
         _currentProfile = await _profileService.LoadProfileAsync();
         BindingContext = _currentProfile;
+
+        // Set default image if none exists
+        if(string.IsNullOrEmpty(_currentProfile.ProfileImagePath))
+        {
+            imgProfile.Source = "layer.png"; // Default placeholder image
+        }
+    }
+
+    private async void OnChangePictureClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Pick Profile Image",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if(result != null)
+            {
+                // Copy the selected image to the app's local storage
+                var localFilePath = Path.Combine(FileSystem.AppDataDirectory,
+                    $"profile_picture{Path.GetExtension(result.FileName)}");
+
+                using(var stream = await result.OpenReadAsync())
+                using(var fileStream = File.OpenWrite(localFilePath))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+                // Update the profile image
+                _currentProfile.ProfileImagePath = localFilePath;
+                imgProfile.Source = ImageSource.FromFile(localFilePath);
+            }
+        }
+        catch(Exception ex)
+        {
+            await DisplayAlert("Error",
+                             $"Failed to pick image: {ex.Message}", "OK");
+        }
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)

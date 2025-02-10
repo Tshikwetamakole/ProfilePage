@@ -1,10 +1,9 @@
 ﻿namespace ProfilePage;
 
-public partial class App : Application
+public partial class AppShell : Shell
 {
-    public App(MainPage mainPage)
+    public AppShell()
     {
         InitializeComponent();
-        MainPage = new NavigationPage(mainPage);
     }
 }

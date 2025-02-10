@@ -8,39 +8,63 @@
     <ScrollView>
         <Grid RowSpacing="10" 
               Padding="20"
-              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <!-- Profile Picture Section -->
+            <Frame Grid.Row="0" 
+                   HeightRequest="150" 
+                   WidthRequest="150" 
+                   CornerRadius="75"
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                   BorderColor="{StaticResource Primary}"
+                   Padding="0">
+                <Image x:Name="imgProfile"
+                       Aspect="AspectFill"
+                       Source="{Binding ProfileImagePath}"
+                       BackgroundColor="LightGray"/>
+            </Frame>
+
+            <Button Grid.Row="1"
+                    Text="Change Picture"
+                    Clicked="OnChangePictureClicked"
+                    HorizontalOptions="Center"
+                    WidthRequest="150"
+                    Margin="0,10,0,20"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"/>
 
             <!-- Name Section -->
-            <Label Grid.Row="0"
+            <Label Grid.Row="2"
                    Text="Name"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                    Margin="0,0,0,5"/>
-            <Entry Grid.Row="1"
+            <Entry Grid.Row="3"
                    x:Name="txtName"
                    Text="{Binding Name}"
                    Placeholder="Enter your name"
                    PlaceholderColor="Gray"/>
 
             <!-- Surname Section -->
-            <Label Grid.Row="2"
+            <Label Grid.Row="4"
                    Text="Surname"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                    Margin="0,0,0,5"/>
-            <Entry Grid.Row="3"
+            <Entry Grid.Row="5"
                    x:Name="txtSurname"
                    Text="{Binding Surname}"
                    Placeholder="Enter your surname"
                    PlaceholderColor="Gray"/>
 
             <!-- Email Section -->
-            <Label Grid.Row="4"
+            <Label Grid.Row="6"
                    Text="Email Address"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                    Margin="0,0,0,5"/>
-            <Entry Grid.Row="5"
+            <Entry Grid.Row="7"
                    x:Name="txtEmail"
                    Text="{Binding EmailAddress}"
                    Keyboard="Email"
@@ -48,12 +72,12 @@
                    PlaceholderColor="Gray"/>
 
             <!-- Bio Section -->
-            <Label Grid.Row="6"
+            <Label Grid.Row="8"
                    Text="Bio"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"
                    Margin="0,0,0,5"/>
-            <Editor Grid.Row="7"
+            <Editor Grid.Row="9"
                     x:Name="txtBio"
                     Text="{Binding Bio}"
                     HeightRequest="100"
@@ -62,7 +86,7 @@
                     AutoSize="TextChanges"/>
 
             <!-- Save Button -->
-            <Button Grid.Row="8"
+            <Button Grid.Row="10"
                     Text="Save Profile"
                     Clicked="OnSaveClicked"
                     Margin="0,20,0,0"
