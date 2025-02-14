@@ -1,77 +1,64 @@
 using ProfilePage.Models;
 using ProfilePage.Services;
 
-namespace ProfilePage.Views;
-
-public partial class ProfilePage : ContentPage
+namespace ProfilePage.Views
 {
-    private readonly ProfileService _profileService;
-    private Profile _currentProfile;
-
-    public ProfilePage(ProfileService profileService)
+    public partial class ProfilePage : ContentPage
     {
-        InitializeComponent();
-        _profileService = profileService;
-        LoadProfile();
-    }
+        private readonly ProfileService _profileService;
+        private Profile _currentProfile;
 
-    private async void LoadProfile()
-    {
-        _currentProfile = await _profileService.LoadProfileAsync();
-        BindingContext = _currentProfile;
-
-        // Set default image if none exists
-        if(string.IsNullOrEmpty(_currentProfile.ProfileImagePath))
+        public ProfilePage()
         {
-            imgProfile.Source = "layer.png"; // Default placeholder image
+            InitializeComponent();
+            _profileService = new ProfileService();
+            LoadProfile();
         }
-    }
 
-    private async void OnChangePictureClicked(object sender, EventArgs e)
-    {
-        try
+        private async void LoadProfile()
         {
-            var result = await FilePicker.PickAsync(new PickOptions
+            _currentProfile = await _profileService.LoadProfileAsync();
+
+            NameEntry.Text = _currentProfile.Name;
+            SurnameEntry.Text = _currentProfile.Surname;
+            EmailEntry.Text = _currentProfile.Email;
+            BioEditor.Text = _currentProfile.Bio;
+
+            if(!string.IsNullOrEmpty(_currentProfile.ProfileImage))
             {
-                PickerTitle = "Pick Profile Image",
-                FileTypes = FilePickerFileType.Images
-            });
-
-            if(result != null)
-            {
-                // Copy the selected image to the app's local storage
-                var localFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"profile_picture{Path.GetExtension(result.FileName)}");
-
-                using(var stream = await result.OpenReadAsync())
-                using(var fileStream = File.OpenWrite(localFilePath))
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-
-                // Update the profile image
-                _currentProfile.ProfileImagePath = localFilePath;
-                imgProfile.Source = ImageSource.FromFile(localFilePath);
+                ProfileImage.Source = _currentProfile.ProfileImage;
             }
         }
-        catch(Exception ex)
-        {
-            await DisplayAlert("Error",
-                             $"Failed to pick image: {ex.Message}", "OK");
-        }
-    }
 
-    private async void OnSaveClicked(object sender, EventArgs e)
-    {
-        try
+        private async void OnSaveProfile(object sender, EventArgs e)
         {
+            _currentProfile.Name = NameEntry.Text;
+            _currentProfile.Surname = SurnameEntry.Text;
+            _currentProfile.Email = EmailEntry.Text;
+            _currentProfile.Bio = BioEditor.Text;
+
             await _profileService.SaveProfileAsync(_currentProfile);
             await DisplayAlert("Success", "Profile saved successfully!", "OK");
         }
-        catch(Exception ex)
+
+        private async void OnChangeProfilePicture(object sender, EventArgs e)
         {
-            await DisplayAlert("Error",
-                             $"Failed to save profile: {ex.Message}", "OK");
+            try
+            {
+                var photo = await MediaPicker.PickPhotoAsync();
+                if(photo != null)
+                {
+                    using var stream = await photo.OpenReadAsync();
+                    var imagePath = await _profileService.SaveProfileImageAsync(stream);
+
+                    _currentProfile.ProfileImage = imagePath;
+                    ProfileImage.Source = imagePath;
+                }
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Error", "Failed to pick photo: " + ex.Message, "OK");
+            }
         }
     }
 }
